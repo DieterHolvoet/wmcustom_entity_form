@@ -12,6 +12,6 @@
     "prefer-stable": true,
     "type": "drupal-module",
     "require": {
-        "php": "^7.0",
+        "php": "^7.0"
     }
 }
