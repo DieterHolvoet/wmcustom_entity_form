@@ -1,0 +1,5 @@
+name: wmcustom_entity_form
+type: module
+description: Use custom entity forms per bundle, per operation.
+core: 8.x
+package: Wieni

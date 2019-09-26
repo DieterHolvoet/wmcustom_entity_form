@@ -1,0 +1,23 @@
+services:
+    custom_entity_form.manager:
+        class: Drupal\wmcustom_entity_form\CustomEntityFormManager
+        parent: default_plugin_manager
+
+    custom_entity_form.formbuilder.entity:
+        class: Drupal\wmcustom_entity_form\Service\EntityFormBuilder
+        arguments:
+            - '@entity_type.manager'
+            - '@form_builder'
+            - '@entity.manager'
+            - '@string_translation'
+            - '@module_handler'
+            - '@class_resolver'
+            - '@custom_entity_form.manager'
+
+    custom_entity_form.controller.entityform:
+        class: Drupal\wmcustom_entity_form\Controller\HtmlEntityFormController
+        arguments:
+            - '@http_kernel.controller.argument_resolver'
+            - '@form_builder'
+            - '@entity.manager'
+            - '@custom_entity_form.formbuilder.entity'
