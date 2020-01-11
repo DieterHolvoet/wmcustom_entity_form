@@ -10,8 +10,6 @@ use Drupal\wmcustom_entity_form\Annotation\EntityForm;
 
 class CustomEntityFormManager extends DefaultPluginManager
 {
-    protected $entityForms;
-
     public function __construct(
         \Traversable $namespaces,
         CacheBackendInterface $cacheBackend,
@@ -28,65 +26,22 @@ class CustomEntityFormManager extends DefaultPluginManager
         $this->setCacheBackend($cacheBackend, 'custom_entity_form_plugins');
     }
 
-    public function clearCachedDefinitions()
+    public function getFormClass(string $entityType, string $bundle, string $operation = 'default')
     {
-        parent::clearCachedDefinitions();
-        $this->entityForms = null;
-    }
-
-    public function getFormClass($entityType, $bundle, $operation = 'default')
-    {
-        if (!isset($this->entityForms)) {
-            $this->processDefinitions();
-        }
-
-        if (empty($this->entityForms[$entityType])) {
-            return null;
-        }
-
-        $keys[] = sprintf(
-            '%s.%s',
-            $bundle,
-            $operation
-        );
+        $keys[] = implode('.', [$entityType, $bundle, $operation]);
 
         // Delete forms has to be explicitly <bundle>.delete
         // So don't fallback to just <bundle> when delete operation.
         if ($operation !== 'delete') {
-            $keys[] = $bundle;
+            $keys[] = implode('.', [$entityType, $bundle, 'default']);
         }
 
         foreach ($keys as $key) {
-            if (isset($this->entityForms[$entityType][$key])) {
-                return $this->entityForms[$entityType][$key]['class'];
+            if ($this->hasDefinition($key)) {
+                return $this->getDefinition($key)['class'];
             }
         }
 
         return null;
-    }
-
-    protected function processDefinitions()
-    {
-        $forms = [];
-
-        foreach ($this->getDefinitions() as $definition) {
-            $info = explode('.', $definition['id']);
-            $entityType = $info[0] ?? null;
-            $bundle = $info[1] ?? null;
-            $operation = $info[2] ?? null;
-
-            if (!$entityType || !$bundle) {
-                continue;
-            }
-
-            $key = $bundle; // ['article']
-            if ($operation) {
-                $key = sprintf('%s.%s', $key, $operation); // ['article.delete']
-            }
-
-            $forms[$entityType][$key] = $definition;
-        }
-
-        return $this->entityForms = $forms;
     }
 }
