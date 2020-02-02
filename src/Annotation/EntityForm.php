@@ -9,9 +9,23 @@ use Drupal\Component\Annotation\Plugin;
  */
 class EntityForm extends Plugin
 {
-    /**
-     * For example: node.article
-     * Or more granular: node.article.delete
-     */
-    public $id;
+    /** @var string */
+    public $entity_type;
+    /** @var string */
+    public $bundle;
+    /** @var string */
+    public $operation = 'default';
+
+    public function getId()
+    {
+        if (isset($this->definition['entity_type'], $this->definition['bundle'])) {
+            return implode('.', [
+                $this->definition['entity_type'],
+                $this->definition['bundle'],
+                $this->definition['operation']
+            ]);
+        }
+
+        return parent::getId();
+    }
 }
