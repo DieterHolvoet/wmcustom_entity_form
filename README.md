@@ -10,7 +10,7 @@ Drupal Custom Entity Form
 ## Installation
 
 ```
-composer require wieni\wmcustom_entity_form
+composer require wieni/wmcustom_entity_form
 drush en wmcustom_entity_form
 ```
 
