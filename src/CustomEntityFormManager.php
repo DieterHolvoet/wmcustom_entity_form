@@ -32,7 +32,7 @@ class CustomEntityFormManager extends DefaultPluginManager
 
         // Delete forms has to be explicitly <bundle>.delete
         // So don't fallback to just <bundle> when delete operation.
-        if ($operation !== 'delete') {
+        if (!in_array($operation, ['delete', 'cancel'])) {
             $keys[] = implode('.', [$entityType, $bundle, 'default']);
         }
 
