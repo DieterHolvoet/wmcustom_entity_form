@@ -4,7 +4,6 @@ namespace Drupal\wmcustom_entity_form\Service;
 
 use Drupal\Core\DependencyInjection\ClassResolverInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
@@ -14,8 +13,6 @@ use Drupal\wmcustom_entity_form\CustomEntityFormManager;
 
 class EntityFormBuilder extends \Drupal\Core\Entity\EntityFormBuilder
 {
-    /** @var \Drupal\Core\Entity\EntityManagerInterface */
-    protected $entityManager;
     /** @var \Drupal\Core\StringTranslation\TranslationInterface */
     protected $stringTranslation;
     /** @var \Drupal\Core\Extension\ModuleHandlerInterface */
@@ -28,7 +25,6 @@ class EntityFormBuilder extends \Drupal\Core\Entity\EntityFormBuilder
     public function __construct(
         EntityTypeManagerInterface $entityTypeManager,
         FormBuilderInterface $formBuilder,
-        EntityManagerInterface $entityManager,
         TranslationInterface $stringTranslation,
         ModuleHandlerInterface $moduleHandler,
         ClassResolverInterface $classResolver,
@@ -39,7 +35,6 @@ class EntityFormBuilder extends \Drupal\Core\Entity\EntityFormBuilder
         $this->moduleHandler = $moduleHandler;
         $this->classResolver = $classResolver;
         $this->customEntityFormManager = $customEntityFormManager;
-        $this->entityManager = $entityManager;
     }
 
     public function getForm(EntityInterface $entity, $operation = 'default', array $formStateAdditions = [])
@@ -83,7 +78,6 @@ class EntityFormBuilder extends \Drupal\Core\Entity\EntityFormBuilder
             ->setStringTranslation($this->stringTranslation)
             ->setModuleHandler($this->moduleHandler)
             ->setEntityTypeManager($this->entityTypeManager)
-            ->setOperation($operation)
-            ->setEntityManager($this->entityManager);
+            ->setOperation($operation);
     }
 }

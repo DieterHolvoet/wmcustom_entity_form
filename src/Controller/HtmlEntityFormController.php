@@ -2,7 +2,7 @@
 
 namespace Drupal\wmcustom_entity_form\Controller;
 
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\wmcustom_entity_form\Service\EntityFormBuilder;
@@ -16,10 +16,10 @@ class HtmlEntityFormController extends \Drupal\Core\Entity\HtmlEntityFormControl
     public function __construct(
         ArgumentResolverInterface $resolver,
         FormBuilderInterface $form_builder,
-        EntityManagerInterface $manager,
+        EntityTypeManagerInterface $entityTypeManager,
         EntityFormBuilder $entityFormBuilder
     ) {
-        parent::__construct($resolver, $form_builder, $manager);
+        parent::__construct($resolver, $form_builder, $entityTypeManager);
         $this->entityFormBuilder = $entityFormBuilder;
     }
 
